@@ -1,0 +1,120 @@
+@property --glowingcard-hue-val {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0;
+}
+
+@property --glowingcard-bg-size {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0;
+}
+.glowing-card {
+    display: flex;
+    height: fit-content;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    visibility: hidden;
+    --glowingcard-bg: #000;
+    --glowingcard-shadow: #000;
+    --glowingcard-border-radius: 3vw;
+    --glowingcard-border-width: 5px;
+    --glowingcard-hue: 0;
+    --glowingcard-saturation: 0;
+    --glowingcard-hue-val: var(--glowingcard-hue);
+    --glowingcard-bg-size: 0;
+    --glowingcard-hue-speed: 1;
+    --glowingcard-animation-speed: 8s;
+    --glowingcard-interaction-speed: 1s;
+    --glowingcard-bg-x: 0;
+    --glowingcard-bg-y: 0;
+}
+
+.glowing-card>div {
+    box-shadow: none;
+    transition: box-shadow calc(var(--glowingcard-interaction-speed)/1.5) ease;
+}
+
+.glowing-card:hover>div {
+    mix-blend-mode: darken;
+    box-shadow: 0 0 0.7vw 0.05vw hsl(var(--glowingcard-hue-val), calc(var(--glowingcard-saturation) * 1%), 30%);
+    transition: box-shadow var(--glowingcard-interaction-speed) ease;
+}
+
+.glowing-card:hover .inner:before {
+    --glowingcard-bg-size: 5;
+    animation-play-state: paused;
+    transition: --glowingcard-bg-size var(--glowingcard-interaction-speed) ease;
+}
+
+.glowing-card:hover .glow {
+    animation-play-state: paused;
+}
+
+.glowing-card:before{
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--glowingcard-border-radius);
+}
+
+.inner {
+    width: 100%;
+    height: 100%;
+    background: var(--glowingcard-bg);
+    border-radius: calc(var(--glowingcard-border-radius) * 0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.inner:before {
+    content: "";
+    display: block;
+    position: absolute;
+    border-radius: calc(var(--glowingcard-border-radius) * 0.9);
+    box-shadow: 0 0 20px var(--glowingcard-shadow);
+    mix-blend-mode: color-burn;
+    z-index: -1;
+    background: hsl(var(--glowingcard-hue-val), calc(var(--glowingcard-saturation) * 1%), 20%) radial-gradient(100% 100% at calc(var(--glowingcard-bg-x) * 1%) calc(var(--glowingcard-bg-y) * 1%),
+    hsl(calc(calc(var(--glowingcard-hue-val) * var(--glowingcard-hue-speed)) * 1deg), calc(var(--glowingcard-saturation) * 1%), 50%) calc(0% * var(--glowingcard-bg-size)),
+    hsl(calc(calc(var(--glowingcard-hue-val) * var(--glowingcard-hue-speed)) * 1deg), calc(var(--glowingcard-saturation) * 1%), 40%) calc(20% * var(--glowingcard-bg-size)),
+    hsl(calc(calc(var(--glowingcard-hue-val) * var(--glowingcard-hue-speed)) * 1deg), calc(var(--glowingcard-saturation) * 1%), 30%) calc(40% * var(--glowingcard-bg-size)),
+    transparent 100%);
+    width: calc(100% + var(--glowingcard-border-width));
+    height: calc(100% + var(--glowingcard-border-width));
+    animation: hue-animation var(--glowingcard-animation-speed) linear infinite;
+    transition: --glowingcard-bg-size calc(var(--glowingcard-interaction-speed) / 1.5) ease;
+}
+
+.glowing-card .glow {
+    display: block;
+    position: absolute;
+}
+
+@keyframes hue-animation {
+    0% {
+        --glowingcard-hue-val: var(--glowingcard-hue);
+    }
+
+    25% {
+        --glowingcard-hue-val: calc(var(--glowingcard-hue) + 15);
+    }
+
+    50% {
+        --glowingcard-hue-val: var(--glowingcard-hue);
+    }
+
+    75% {
+        --glowingcard-hue-val: calc(var(--glowingcard-hue) - 15);
+    }
+
+    100% {
+        --glowingcard-hue-val: var(--glowingcard-hue);
+    }
+}

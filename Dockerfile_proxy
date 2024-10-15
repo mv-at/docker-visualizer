@@ -1,0 +1,9 @@
+FROM node:alpine
+WORKDIR /app
+COPY package_proxy.json package.json
+RUN  npm install
+COPY docker-proxy.js .
+
+EXPOSE 4000
+
+CMD ["node", "docker-proxy.js"]

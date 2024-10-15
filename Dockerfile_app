@@ -1,0 +1,14 @@
+FROM node:alpine
+WORKDIR /app
+COPY package.json .
+RUN  npm install
+COPY . .
+
+ENV ICON_PATH=/app/public/icons
+
+RUN npm run build
+
+EXPOSE 3000
+EXPOSE 4000
+
+CMD ["npm", "start"]
