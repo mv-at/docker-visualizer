@@ -38,7 +38,6 @@ const Container = (props: { data: ContainerData, removeContainer: (id: string) =
 
     const updateContainer = () => {
         fetch('/api/docker/container/' + data.id).then(res => res.json()).then(newData => {
-            console.log(newData);
             setData(newData);
         });
     }

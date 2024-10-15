@@ -25,8 +25,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
+      - DOCKER_SERVER_NAME=<Server Name>
       - DOCKER_PROXY_SECRET=<your-secret>
 ```
+Set `<Server Name>` to the name of your Docker server.
+
 Generate a secret with `openssl rand -hex 32` and replace `<your-secret>` with the generated secret.
 
 ### Enabling user controls
@@ -43,10 +46,10 @@ To set custom icons, you need to mount the folder `/app/public/imageicon` inside
 The folder structure should look like this:
 ```
 imageicon
-├── dockerhub                                # Folder for Docker Hub icons                             
-│   ├── matteovalentini.svg                  # Icon for the publisher matteovalentini on Docker Hub
+├── dockerhub                              # Folder for Docker Hub icons                          
+│   ├── matteovalentini.svg                # Icon for the publisher matteovalentini on Docker Hub
 │   └── mvat
-│       └── docker-visualizer.png            # Icon for the image mvat/docker-visualizer on Docker Hub
+│       └── docker-visualizer.png          # Icon for the image mvat/docker-visualizer on Docker Hub
 │
 └── my-registry.com
     └── my-image

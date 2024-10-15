@@ -4,7 +4,7 @@ COPY package.json .
 RUN  npm install
 COPY . .
 
-ENV ICON_PATH=/app/public/icons
+ENV ICON_PATH=/app/public/imageicon
 
 RUN npm run build
 

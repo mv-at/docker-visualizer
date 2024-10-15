@@ -2,10 +2,11 @@
   "name": "docker-visualizer",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "concurrently --kill-others \"node socket-proxy\" \"next start\"",
+    "start": "concurrently --kill-others \"node docker-proxy\" \"next start\"",
     "lint": "next lint"
   },
   "dependencies": {

@@ -11,8 +11,6 @@ const docker_fetch = async (url: string, options?: any) => {
 
     const headers = {} as { [key: string]: string };
 
-    console.log(headers);
-
     if (process.env.DOCKER_PROXY_MODE?.toLowerCase() === 'cloudflare') {
         headers['CF-Access-Client-Id'] = process.env.CF_CLIENT_ID || '';
         headers['CF-Access-Client-Secret'] = process.env.CF_CLIENT_SECRET || '';
