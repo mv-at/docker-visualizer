@@ -35,7 +35,7 @@ const GET = async (req: NextRequest) => {
 
         const basePath = process.env.ICON_PATH;
         if (!basePath || !imageData) return Response.redirect(baseUrl + 'img/container.svg', 302);
-        return Response.redirect(baseUrl + await findPath(basePath, imageData.registry, imageData.publisher, imageData.name), 302);
+        return Response.redirect(baseUrl + await findPath(basePath, imageData.registry || 'dockerhub', imageData.publisher || imageData.name, imageData.name), 302);
     } catch (e) {
         console.error(e);
         return Response.redirect(baseUrl + 'img/container.svg', 302);

@@ -4,6 +4,7 @@ import React, {useContext} from 'react';
 import {ContainerData, ContainerState} from "@/types/ContainerData";
 import GlowingCard from "@/components/GlowingCard";
 import {ContainerViewContext} from "@/context/ContainerView";
+import {translateImage} from "@/lib/image";
 
 const Container = (props: { data: ContainerData, removeContainer: (id: string) => void }) => {
 
@@ -27,11 +28,14 @@ const Container = (props: { data: ContainerData, removeContainer: (id: string) =
     }
 
     const formatImage = (image: string) => {
-        if (image.startsWith('sha256:'))
+        const parts = translateImage(image);
+        if (parts === undefined)
             return image.substring(7, 32) + '...';
-        if (image.includes(':'))
-            return <>{image.split(':')[0]}<span style={{color: '#a5a5e7'}}>{':' + image.split(':')[1]}</span></>;
-        return image;
+        const elements: any[] = [];
+        const raw = (parts?.publisher !== undefined ? (parts?.publisher + '/' + parts?.name) : parts?.name)?.split(':')[0].split('/');
+        raw.forEach((element, index) => elements.push(element + (index == (raw.length - 1) ? '' : '/' ), <wbr/>));
+        image.includes(':') && elements.push(<span style={{color: '#a5a5e7'}}>{':' + image.split(':')[1]}</span>);
+        return elements;
     }
 
     const [deleteConfirm, setDeleteConfirm] = React.useState(false);
@@ -77,13 +81,13 @@ const Container = (props: { data: ContainerData, removeContainer: (id: string) =
                 <div className='flex p-1 w-full items-center'>
                     <img className='w-14 h-14 bg-black rounded-2xl mr-2' alt='' src={'/api/imageicon?image=' + encodeURIComponent(data.image)} onClick={updateContainer}/>
                     <div className='flex flex-col flex-1 leading-[1rem]'>
-                        <span className='text-md mb-1 overflow-ellipsis'>{data.name?.substring(1)}</span>
-                        <span className='text-[0.8rem] text-zinc-400 h-8 break-all overflow-ellipsis overflow-hidden w-18'>{formatImage(data.image)}</span>
+                        <span className='text-md mb-0.5 overflow-ellipsis max-w-52 overflow-hidden text-nowrap break-words h-5'>{data.name?.substring(1)}</span>
+                        <span className='text-xs text-zinc-400 h-8 overflow-ellipsis overflow-hidden w-18'>{formatImage(data.image)}</span>
                     </div>
                 </div>
                 <span className='w-full text-zinc-400 text-[0.8rem] py-0.5 border-y-[1px] border-zinc-700 mt-1 text-center'>{data.status}</span>
                 <span className='w-full text-zinc-400 text-[0.8rem] pb-0.5 border-b-[1px] border-zinc-700 text-center'>Running on <span
-                    className='font-bold'>{data.server}</span></span>
+                    className='font-bold overflow-ellipsis max-w-32 overflow-hidden text-nowrap break-words'>{data.server}</span></span>
 
                 <div className='flex justify-evenly p-2 pb-1 w-full'>
                     {data.state == 'running' ? <>
